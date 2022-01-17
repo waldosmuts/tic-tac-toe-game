@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        fredoka: ['Fredoka One', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- <link rel="stylesheet" href="../src/index.css"> -->
+    <!-- Webfont -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+</head>
+
+<body class="bg-gray-900 flex flex-col items-center justify-center h-full">
+    <main>
+        <div class="main__alert font-fredoka text-center uppercase bg-yellow-500 text-gray-900 py-3 w-96 rounded-xl fixed top-10 left-1/2 -translate-x-1/2"
+            style="display: none;">
+            <i class="fas fa-exclamation-triangle mr-2"></i><span class="alert__text"></span>
+        </div>
+        <div class="main__menu flex flex-col items-center gap-3 w-96">
+            <h1 class='font-fredoka text-4xl'>
+                <a href="." class="flex gap-1"><span class='text-teal-400'>X</span><span
+                        class='text-yellow-500'>O</span></a>
+            </h1>
+            <div class="bg-gray-800 px-5 py-5 rounded-xl flex flex-col items-center gap-4 drop-shadow-xl mb-6">
+                <h2 class="font-fredoka uppercase text-gray-500">Pick Player 1's Mark</h2>
+                <form id="select__form" class="bg-gray-900 p-2 flex rounded-md w-full gap-2">
+                    <label for="X"
+                        class="mark__label font-fredoka uppercase text-gray-500 text-3xl w-40 py-1 rounded hover:bg-gray-400 hover:text-gray-900 transition text-center cursor-pointer">X</label>
+                    <input type="radio" name="playerMark" id="X" value="X" class="mark__radio hidden">
+                    <label for="O"
+                        class="mark__label font-fredoka uppercase text-gray-500 text-3xl w-40 py-1 rounded hover:bg-gray-400 hover:text-gray-900 transition text-center cursor-pointer">O</label>
+                    <input type="radio" name="playerMark" id="O" value="O" class="mark__radio hidden">
+                </form>
+                <h3 class="font-fredoka uppercase text-gray-700">X goes first</h3>
+            </div>
+            <button type="submit" form="select__form"
+                class="bg-yellow-500 w-full py-3 rounded-xl text-gray-900 font-fredoka uppercase" disabled>
+                New Game
+                <span
+                    class="mx-2 font-fredoka uppercase py-1 px-2 bg-gray-900 text-yellow-500 rounded-md text-sm tracking-wider">CPU</span>
+                <span
+                    class="font-fredoka uppercase py-1 px-2 bg-gray-900 text-yellow-500 rounded-md text-sm tracking-wider opacity-50">INCOMPLETE</span>
+
+            </button>
+            <button type="submit" form="select__form"
+                class="bg-teal-400 w-full py-3 rounded-xl text-gray-900 font-fredoka uppercase">
+                New Game
+                <span
+                    class="ml-2 font-fredoka uppercase py-1 px-2 bg-gray-900 text-teal-400 rounded-md text-sm tracking-wider">Multiplayer</span>
+            </button>
+        </div>
+        <div class="main__board" style="display: none;">
+            <div class="board__controls grid grid-cols-3 items-center w-96 pb-8">
+                <a href="." class="flex items-center justify-self-start gap-1 font-fredoka text-4xl"><span
+                        class='text-teal-400'>X</span><span class='text-yellow-500'>O</span></a>
+                <div
+                    class="cursor-pointer flex items-center justify-self-center bg-gray-800 text-gray-500 font-fredoka uppercase px-6 py-4 rounded-xl font-black tracking-widest">
+                    <span id="turn__mark" class="transition" style="opacity: 0;"></span>Turn
+                </div>
+                <button id="controls__conceed"
+                    class="justify-self-end bg-gray-500 text-gray-900 h-10 w-10 rounded-xl"><i
+                        class="fas fa-redo-alt"></i></button>
+            </div>
+            <div class="board__tiles grid grid-cols-3 gap-4 mb-8 " style="height: 0;"></div>
+            <div class="board__stats grid grid-cols-3 gap-4 font-fredoka">
+                <div class="stats__x bg-teal-400 text-gray-900 rounded-xl flex flex-col items-center py-2">
+                    <span class="uppercase opacity-50">X</span>
+                    <span id="x-stat" class="text-2xl">0</span>
+                </div>
+                <div class="stats__tie bg-gray-400 text-gray-900 rounded-xl flex flex-col items-center py-2">
+                    <span class="uppercase opacity-50">Tie</span>
+                    <span id="tie-stat" class="text-2xl">0</span>
+                </div>
+                <div class="stats__o bg-yellow-500 text-gray-900 rounded-xl flex flex-col items-center py-2">
+                    <span class="uppercase opacity-50">O</span>
+                    <span id="o-stat" class="text-2xl">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="main__announcement">
+            <div class="announcement__background fixed top-0 left-0 w-full h-full bg-black opacity-20"></div>
+            <div
+                class="announcement__alert fixed top-1/2 -translate-y-1/2 left-0 w-full py-10 bg-gray-800 flex flex-col items-center gap-4">
+                <span id="alert__winner" class="uppercase font-fredoka text-gray-500"></span>
+                <span class="alert__winner font-fredoka text-4xl uppercase flex items-center gap-4 font-black">
+                    <span class="winner__mark text-6xl"></span>
+                    <span class="winner__message tracking-widest"></span>
+                </span>
+                <div class="flex gap-2">
+                    <a href="." class="uppercase py-2 px-4 bg-gray-400 text-gray-900 font-fredoka rounded-xl">Quit</a>
+                    <button id="next-round"
+                        class="uppercase py-2 px-4 bg-yellow-500 text-gray-900 font-fredoka rounded-xl">Next
+                        Round</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="./app/js/index.js"></script>
+</body>
+
+</html>
